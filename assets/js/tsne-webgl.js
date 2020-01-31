@@ -832,9 +832,8 @@ function onMouseup(event) {
   );
   // Get the modal
 var modal = document.getElementById("myModal");
-
-document.getElementById("url_of_image").innerHTML = "https://collection.sciencemuseumgroup.org.uk/objects/" + imageDataKeys2[imageIndex]['id'];
-document.getElementById("name_of_image").innerHTML = imageDataKeys2[imageIndex]['title'];
+document.getElementById("url_of_image").innerHTML = imageDataKeys2[imageIndex]['title'];
+document.getElementById("url_of_image").href = "https://collection.sciencemuseumgroup.org.uk/objects/" + imageDataKeys2[imageIndex]['id'];
 document.getElementById("collection_img").src = imageDataKeys2[imageIndex]['picture'] + "/full/256,/0/default.jpg";
 
 // Get the <span> element that closes the modal
