@@ -5,6 +5,7 @@
 // Initialize global data stores for image data
 var imageData = {};
 var imageDataKeys = [];
+var imageDataKeys2 = [];
 
 // Identify data endpoint
 var dataUrl = 'output/';
@@ -188,6 +189,7 @@ function setImageData(json) {
     var img = parseImage(img);
     // Store a sorted list of the imageData keys
     imageDataKeys.push(img.name);
+    imageDataKeys2.push(img);
     // Update the global data store with this image's data
     imageData[img.name] = getImageData(img, idx);
   })
@@ -215,6 +217,9 @@ function parseImage(img) {
     y: img[2],
     width: img[3],
     height: img[4],
+    id: img[5],
+    title: img[6],
+    picture: img[7],
     xOffset: (sizes.image.width - img[3])/2,
     yOffset: (sizes.image.height - img[4])/2
   }
@@ -825,6 +830,20 @@ function onMouseup(event) {
     selected.point.y,
     selected.point.z
   );
+  // Get the modal
+var modal = document.getElementById("myModal");
+
+document.getElementById("url_of_image").innerHTML = "https://collection.sciencemuseumgroup.org.uk/objects/" + imageDataKeys2[imageIndex]['id'];
+document.getElementById("name_of_image").innerHTML = imageDataKeys2[imageIndex]['title'];
+document.getElementById("collection_img").src = imageDataKeys2[imageIndex]['picture'] + "/full/256,/0/default.jpg";
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+  modal.style.display = "block";
+
+  span.onclick = function() {
+  modal.style.display = "none";
+}
 }
 
 /**
