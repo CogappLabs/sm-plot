@@ -44,6 +44,7 @@ flags.DEFINE_integer('clusters', 20, 'The number of clusters to display in the i
 flags.DEFINE_boolean('validate_images', True, 'Whether to validate images before processing')
 flags.DEFINE_string('output_folder', 'output', 'The folder where output files will be stored')
 flags.DEFINE_string('layout', 'umap', 'The layout method to use {umap|tsne|fitsne}')
+flags.DEFINE_string('extra_data', '../input/image_data.json', 'Path to additional data file')
 FLAGS = flags.FLAGS
 
 
@@ -65,6 +66,7 @@ class PixPlot:
     self.rewrite_image_vectors = False
     self.rewrite_atlas_files = True
     self.validate_inputs(FLAGS.validate_images)
+    self.extra_data = FLAGS.extra_data
     self.create_output_dirs()
     self.create_image_thumbs()
     self.create_image_vectors()
@@ -256,6 +258,10 @@ class PixPlot:
     Write a JSON file that indicates the 2d position of each image
     '''
     print(' * writing JSON file')
+    if self.extra_data:
+      print('with extra data')
+      with open(self.extra_data) as json_file:
+        imgdata = json.load(json_file)
     image_positions = []
     for c, i in enumerate(tqdm(fit_model)):
       img = get_filename(self.vector_files[c])
@@ -264,14 +270,20 @@ class PixPlot:
       thumb_path = join(self.output_dir, 'thumbs', '32px', img.replace('.png', '.jpg'))
       with Image.open(thumb_path) as image:
         width, height = image.size
-      # Add the image name, x offset, y offset
-      image_positions.append([
-        os.path.splitext(os.path.basename(img))[0],
+      imgid = os.path.splitext(os.path.basename(img))[0]
+      imgchunk = [
+        imgid,
         int(i[0] * 100),
         int(i[1] * 100),
         width,
         height
-      ])
+      ]
+      if self.extra_data:
+        imgchunk.append(imgid)
+        imgchunk.append(imgdata[imgid]['name'])
+        imgchunk.append(imgdata[imgid]['iiif'])
+      # Add the image name, x offset, y offset
+      image_positions.append(imgchunk)
     return image_positions
 
 

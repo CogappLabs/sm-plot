@@ -1,4 +1,4 @@
-# PixPlot
+# PixPlot - Science Museum version
 
 This repository contains code that can be used to visualize tens of thousands of images in a two-dimensional projection within which similar images are clustered together. The image analysis uses (by default) a pre-trained captioning neural network from Google called [Inception](https://ai.google/research/pubs/pub43022), discarding the final labels and using the penultimate layer to provide 2,048-dimensional visual features. The visualization layer uses a custom WebGL viewer.
 
