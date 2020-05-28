@@ -574,7 +574,7 @@ function updateFaceVertexUvs(geometry, img) {
       new THREE.Vector2(uv.x + uv.w, uv.y + uv.h)
     ]
   }
-  // Map the region of the image described by the lower-left, 
+  // Map the region of the image described by the lower-left,
   // upper-right, and upper-left vertices to `faceTwo`
   if (geometry.faceVertexUvs[0][uv.face + 1]) {
     geometry.faceVertexUvs[0][uv.face + 1][0].set(uv.x, uv.y)
@@ -802,6 +802,9 @@ function onMousemove(event) {
 
 function onMousedown(event) {
   lastMouse.copy( mouse );
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
 }
 
 /**
@@ -832,9 +835,9 @@ function onMouseup(event) {
   );
   // Get the modal
 var modal = document.getElementById("myModal");
-document.getElementById("url_of_image").innerHTML = imageDataKeys2[imageIndex]['title'];
+document.getElementById("image_title").innerHTML = imageDataKeys2[imageIndex]['title'];
 document.getElementById("url_of_image").href = "https://collection.sciencemuseumgroup.org.uk/objects/" + imageDataKeys2[imageIndex]['id'];
-document.getElementById("collection_img").src = imageDataKeys2[imageIndex]['picture'] + "/full/256,/0/default.jpg";
+document.getElementById("collection_img").src = imageDataKeys2[imageIndex]['picture'] + "/full/512,/0/default.jpg";
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -922,6 +925,14 @@ function addWindowEventListeners() {
     var hash = e.newURL.split('/#')[1];
     var coords = imageData[hash].pos;
     flyTo(coords.x, coords.y, coords.z);
+  })
+  document.addEventListener('keydown', function(e){
+    var code = event.keys || event.which;
+    console.log("key" + event.key);console.log("which" + event.which);
+    if(code == 27 || code == 'Escape'){
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+    }
   })
 }
 
